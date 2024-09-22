@@ -1,0 +1,527 @@
+openapi: 3.0.0
+info:
+   title: 'Articles Management API'
+   version: 1.0.0
+   description: 'API Docs - Articles Management API'
+paths:
+   # healthCheck
+   /api/health:
+      get:
+         tags:
+            - Health Check
+         summary: Health Check
+         description: ''
+         responses:
+            200:
+               description: Health Check Successful!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/healthCheckResponse'
+            400:
+               description: Bad request
+            500:
+               description: Internal Server Error
+
+   # createAuthor
+   /api/author:
+      post:
+         tags:
+            - Author
+         summary: Create Author
+         description: 'Create new author'
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     type: object
+                     properties:
+                        name:
+                           type: string
+                           default: 'test'
+                        email:
+                           type: string
+                           default: 'test@gmail.com'
+                        password:
+                           type: string
+                           default: '123456789'
+         responses:
+            200:
+               description: Author created successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/createAuthorResponse'
+            400:
+               description: Bad request
+
+   # getAuthors
+   /api/authors:
+      get:
+         tags:
+            - Author
+         summary: Get Authors
+         description: 'Get all authors'
+         security:
+            - BearerAuth: []
+         responses:
+            200:
+               description: Authors fetched successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/getAuthorsResponse'
+            400:
+               description: Bad request
+
+   # getAuthorById
+   /api/author/{id}:
+      get:
+         tags:
+            - Author
+         summary: Get Author By Id
+         description: 'Get author by id'
+         security:
+            - BearerAuth: []
+         parameters:
+            - in: path
+              name: id
+              required: true
+              schema:
+                 type: integer
+              description: 'Author Id'
+         responses:
+            200:
+               description: Author fetched successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/getAuthorByIdResponse'
+            400:
+               description: Bad request
+
+   # createArticle
+   /api/article:
+      post:
+         tags:
+            - Article
+         summary: Create Article
+         description: 'Create new article'
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     type: object
+                     properties:
+                        email:
+                           type: string
+                           default: 'test@gmail.com'
+                        password:
+                           type: string
+                           default: '123456789'
+                        title:
+                           type: string
+                           default: 'test title'
+                        content:
+                           type: string
+                           default: 'test contest'
+         responses:
+            200:
+               description: Article created successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/createArticleResponse'
+            400:
+               description: Bad request
+
+   # getArticles
+   /api/articles:
+      get:
+         tags:
+            - Article
+         summary: Get Articles
+         description: 'Get all articles'
+         responses:
+            200:
+               description: Articles fetched successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/getArticlesResponse'
+            400:
+               description: Bad request
+
+   # getArticleById
+   /api/article/{id}:
+      get:
+         tags:
+            - Article
+         summary: Get Article By Id
+         description: 'Get article by id'
+         security:
+            - BearerAuth: []
+         parameters:
+            - in: path
+              name: id
+              required: true
+              schema:
+                 type: integer
+              description: 'Author Id'
+         responses:
+            200:
+               description: Article fetched successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/getArticleByIdResponse'
+            400:
+               description: Bad request
+
+      # deleteArticleById
+      delete:
+         tags:
+            - Article
+         summary: Delete Article By Id
+         description: 'Delete article by id'
+         security:
+            - BearerAuth: []
+         parameters:
+            - in: path
+              name: id
+              required: true
+              schema:
+                 type: integer
+              description: 'Article Id'
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     type: object
+                     properties:
+                        email:
+                           type: string
+                           default: 'test@gmail.com'
+                        password:
+                           type: string
+                           default: '123456789'
+         responses:
+            200:
+               description: Article deleted successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/deleteArticleByIdResponse'
+            400:
+               description: Bad request
+
+   # createComment
+   /api/comment:
+      post:
+         tags:
+            - Comment
+         summary: Create Comment
+         description: 'Create new comment'
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     type: object
+                     properties:
+                        authorId:
+                           type: integer
+                           default: 1
+                        articleId:
+                           type: integer
+                           default: 1
+                        content:
+                           type: string
+                           default: 'test comment'
+         responses:
+            200:
+               description: Comment created successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/createCommentResponse'
+            400:
+               description: Bad request
+
+   # getComments
+   /api/comments:
+      get:
+         tags:
+            - Comment
+         summary: Get Comments
+         description: 'Get all comments'
+         responses:
+            200:
+               description: Comments fetched successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/getCommentsResponse'
+            400:
+               description: Bad request
+
+   # getCommentById
+   /api/comment/{id}:
+      get:
+         tags:
+            - Comment
+         summary: Get Comment By Id
+         description: 'Get comment by id'
+         parameters:
+            - in: path
+              name: id
+              required: true
+              schema:
+                 type: integer
+              description: 'Comment Id'
+         responses:
+            200:
+               description: Comment fetched successfully!
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/getCommentByIdResponse'
+            400:
+               description: Bad request
+
+components:
+   securitySchemes:
+      BearerAuth:
+         type: http
+         scheme: bearer
+         bearerFormat: JWT
+         description: 'Authorization: Bearer {token}'
+
+   schemas:
+      healthCheckResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Server is up and running'
+
+      createAuthorResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'User Registered Successfully!'
+            accessToken:
+               type: string
+               example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdDIiLCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTExIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTcyNjA3NjE3MiwiZXhwIjoxNzI2MDc3NjcyfQ.5HoXANYIZl5ClYyBIzqUyTrDW3DrFtMlWiAU_qB1K94'
+
+      getAuthorsResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Authors fetched successfully!'
+            response:
+               type: array
+               items:
+                  type: object
+                  properties:
+                     id:
+                        type: integer
+                        example: 1
+                     name:
+                        type: string
+                        example: 'test'
+                     email:
+                        type: string
+                        example: 'test@gmail.com'
+                     isAdmin:
+                        type: boolean
+                        example: false
+
+      getAuthorByIdResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Author fetched successfully!'
+            response:
+               type: object
+               properties:
+                  id:
+                     type: integer
+                     example: 1
+                  name:
+                     type: string
+                     example: 'test'
+                  email:
+                     type: string
+                     example: 'test@gmail.com'
+                  isAdmin:
+                     type: boolean
+                     example: false
+
+      createArticleResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Article created successfully!'
+            response:
+               type: object
+               properties:
+                  successful:
+                     type: boolean
+                     example: true
+                  message:
+                     type: string
+                     example: 'Article created successfully!'
+                  articleId:
+                     type: integer
+                     example: 1
+
+      getArticlesResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Articles fetched successfully!'
+            result:
+               type: array
+               items:
+                  type: object
+                  properties:
+                     id:
+                        type: integer
+                        example: 1
+                     authorId:
+                        type: integer
+                        example: 1
+                     title:
+                        type: string
+                        example: 'test title'
+                     content:
+                        type: string
+                        example: 'test contest'
+                     createdAt:
+                        type: string
+                        example: '2021-09-01T00:00:00.000Z'
+
+      getArticleByIdResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Article fetched successfully!'
+            result:
+               type: object
+               properties:
+                  id:
+                     type: integer
+                     example: 1
+                  authorId:
+                     type: integer
+                     example: 1
+                  title:
+                     type: string
+                     example: 'test title'
+                  content:
+                     type: string
+                     example: 'test contest'
+                  createdAt:
+                     type: string
+                     example: '2021-09-01T00:00:00.000Z'
+
+      deleteArticleByIdResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Article deleted successfully!'
+            result:
+               type: number
+               example: 1
+
+      createCommentResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Inserted Successfully!'
+
+      getCommentsResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Comments fetched successfully!'
+            result:
+               type: array
+               items:
+                  type: object
+                  properties:
+                     id:
+                        type: integer
+                        example: 1
+                     authorId:
+                        type: integer
+                        example: 1
+                     articleId:
+                        type: integer
+                        example: 1
+                     content:
+                        type: string
+                        example: 'test comment'
+                     createdAt:
+                        type: string
+                        example: '2021-09-01T00:00:00.000Z'
+
+      getCommentByIdResponse:
+         properties:
+            successful:
+               type: boolean
+               example: true
+            message:
+               type: string
+               example: 'Comment fetched successfully!'
+            result:
+               type: object
+               properties:
+                  id:
+                     type: integer
+                     example: 1
+                  authorId:
+                     type: integer
+                     example: 1
+                  articleId:
+                     type: integer
+                     example: 1
+                  content:
+                     type: string
+                     example: 'test comment'
+                  createdAt:
+                     type: string
+                     example: '2021-09-01T00:00:00.000Z'

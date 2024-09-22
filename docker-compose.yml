@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+   articles-management-api-prod:
+      container_name: articles-management-api-prod
+      build:
+         context: .
+      volumes:
+         - ./:/usr/src/app
+         - /usr/src/app/node_modules
+      ports:
+         - 4000:4000
+      command: sh -c "until nc -z mysql 3306; do echo 'Waiting for MySQL...'; sleep 2; done; npm run db-migrate && npm run start"
+      environment:
+         NODE_ENV: production
+         PORT: 4000
+
+         DB_HOST: mysql
+         DB_USER: test
+         DB_PASSWORD: password
+         DB_NAME: test_db
+         DB_PORT: 3306
+
+         SECRET_KEY: secret
+         EXPIRATION_TIME: 25m
+
+         REDIS_HOST: redis
+         REDIS_PORT: 6380
+      depends_on:
+         - mysql
+         - redis
+
+   mysql:
+      image: mysql
+      restart: always
+      volumes:
+         - mysql:/var/lib/mysql
+      environment:
+         MYSQL_ROOT_PASSWORD: password
+         MYSQL_USER: test
+         MYSQL_PASSWORD: password
+         MYSQL_DATABASE: test_db
+      ports:
+         - 3306:3306
+
+   redis:
+      image: redis
+      restart: always
+      volumes:
+         - redis:/var/lib/redis
+      ports:
+         - 6380:6380
+      command: --port 6380
+
+volumes:
+   mysql:
+   redis:
